@@ -4,10 +4,12 @@ import HomePage from '../src/Components/HomePage.js';
 import LoginPage from '../src/Components/LoginPage.js';
 import SignupPage from '../src/Components/SignUpPage.js';
 import ForgotPasswordPage from '../src/Components/ForgotPasswordPage.js';
+import Navbar from '../src/Components/Navbar.js';
 
 function App() {
   return (
     <Router>
+      <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
