@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function LoginPage() {
@@ -6,6 +6,25 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [data, setData] = useState('');
+  const token = localStorage.getItem('token');
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/protected', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setData(response.data.message);
+        } catch (error) {
+            setData(error.response.data.error || 'Error accessing protected route');
+        }
+    };
+    fetchData();
+}, [token]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +34,8 @@ function LoginPage() {
     try {
       const response = await axios.post('http://localhost:5000/api/login', { email, password });
       setSuccess(response.data.message);
+      // Store JWT in localStorage
+      localStorage.setItem('token', response.data.token);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
     }
@@ -45,7 +66,9 @@ function LoginPage() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
       <a href="/forgot-password" style={{ color: '#fff' }}>Forgot Password?</a>
+    <p>{data}</p>
     </div>
+
   );
 }
 

@@ -2,7 +2,9 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../Backend/UserSchema.js');
+const jwt = require('jsonwebtoken');
 
+const JWT_SECRET = 'fuifnfiuebg5454$%^&*(*&^%bjdbibiuf%^&*';
 const router = express.Router();
 
 // Signup route
@@ -34,7 +36,11 @@ router.post('/login', async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) return res.status(400).json({ message: 'Invalid credentials' });
 
-    res.json({ message: 'Login successful' });
+    // Generate JWT
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '10s' });
+
+
+    res.json({ message: 'Login successful' , token });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -56,6 +62,24 @@ router.post('/reset-password', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
+});
+
+
+
+function authenticateToken(req, res, next) {
+  const token = req.header('Authorization')?.split(' ')[1];
+  if (!token) return res.status(403).json({ error: 'Access denied, no token provided' });
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+      if (err) return res.status(403).json({ error: 'Invalid or expired token' });
+      req.user = user;
+      next();
+  });
+}
+
+// Protected route example
+router.get('/protected', authenticateToken, (req, res) => {
+  res.json({ message: 'This is a protected route', user: req.user });
 });
 
 module.exports = router;
