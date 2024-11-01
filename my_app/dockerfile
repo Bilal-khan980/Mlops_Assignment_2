@@ -1,18 +1,21 @@
-FROM node:16
+# Use Node.js base image
+FROM node:18
 
+# Set working directory
 WORKDIR /app
 
+# Copy package.json and install dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy the rest of the code
 COPY . .
 
+# Build the React application
 RUN npm run build
 
+# Expose the frontend port
 EXPOSE 3000
 
-# Install serve globally
-RUN npm install -g serve
-
-# Use serve to serve the build folder
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Run the application
+CMD ["npx", "serve", "-s", "build", "-l", "3000"]

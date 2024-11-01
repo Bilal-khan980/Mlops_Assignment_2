@@ -13,8 +13,7 @@ app.use(express.json());
 const mongoURI = 'mongodb+srv://Bilalkhan:Pakistan@cluster1.moct8fi.mongodb.net/Mlops'; 
 
 mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  
 })
   .then(() => console.log('MongoDB connected'))
   .catch((error) => console.error('MongoDB connection failed:', error.message));

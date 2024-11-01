@@ -21,11 +21,10 @@ services:
     ports:
       - "27017:27017"
 
-  # auth:
-  #   build: ./my_app/backend
-  #   ports:
-  #     - "5001:5001"
-  #   environment:
-  #     - MONGO_URI=mongodb+srv://Bilalkhan:Pakistan@cluster1.moct8fi.mongodb.net/Wasay_MLOPS_Task6
-  #     - JWT_SECRET=fuifnfiuebg5454$%^&*(*&^%bjdbibiuf%^&*
-        
+  auth:
+    build: ./my_app/backend
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb+srv://Bilalkhan:Pakistan@cluster1.moct8fi.mongodb.net/Wasay_MLOPS_Task6
+      - JWT_SECRET=fuifnfiuebg5454$%^&*(*&^%bjdbibiuf%^&*      

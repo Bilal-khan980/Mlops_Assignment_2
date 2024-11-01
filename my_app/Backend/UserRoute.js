@@ -1,7 +1,7 @@
 // route.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const User = require('../Backend/UserSchema.js');
+const User = require('./UserSchema.js');
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = 'fuifnfiuebg5454$%^&*(*&^%bjdbibiuf%^&*';
